@@ -1,0 +1,27 @@
+*.class
+*.log
+
+# Emacs
+*~
+\#*\#
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Maven and SBT
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Mac OS X
+.DS_Store?
+Icon?
+
+# Thumbnails
+._*
