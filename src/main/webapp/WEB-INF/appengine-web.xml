@@ -3,13 +3,22 @@
   <application>sliceboard</application>
   <version>1</version>
   <system-properties>
-    <property name="in.gae.j" value="true"/>
+    <!-- Set-up the app engine JDK logging. -->
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
-    <property name="run.mode" value="staging"/>
+    <!-- The following two properties are Lift-specific. -->
+    <!-- Turn on Lift's GAE/J support. -->
+    <property name="in.gae.j" value="true"/>
+    <!-- Specify Lift's run mode: development, test, staging, pilot, or production. -->
+    <property name="run.mode" value="development"/>
   </system-properties>
   <sessions-enabled>true</sessions-enabled>
   <static-files>
     <include path="/images/**"/>
     <exclude path="/**"/>
   </static-files>
+
+  <!-- It it advised to keep this parameter to true -->
+  <!-- as per the release of SDK 1.2.8, -->
+  <!-- this should speed up cold startups of applications by 10%. -->
+  <precompilation-enabled>true</precompilation-enabled>
 </appengine-web-app>
