@@ -4,21 +4,34 @@ import _root_.net.liftweb.common._
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
-import _root_.net.liftweb.sitemap.Loc._
+import Loc._
 import Helpers._
+import com.juiceanalytics.nectar.model.User
+import com.juiceanalytics.nectar.snippet.Login
 
 /**
  * A class that's instantiated early and run.  It allows the application
  * to modify lift's environment
  */
 class Boot {
+  val AltAuthRequired = If(() => Login.isLoggedIn.get, () => RedirectResponse("/login"))
+
   def boot {
     // Specify where to search for snippet code.
     LiftRules.addToPackages("com.juiceanalytics.nectar")
 
     // Build the SiteMap.
-    val entries = Menu(Loc("Home", List("index"), "Home")) :: Nil
-    LiftRules.setSiteMap(SiteMap(entries: _*))
+    val siteMap = SiteMap(
+      Menu.i("Home") / "index" >> User.AddUserMenusAfter,
+      Menu.i("Text") / "text" >> EarlyResponse(() => Full(RedirectResponse("static/text.txt"))),
+      Menu.i("Alt Login") / "login" >> User.loginFirst,
+      Menu.i("Secure") / "secure" >> AltAuthRequired,
+      Menu.i("Static") / "static" / ** >> Hidden
+    )
+
+    // Set the sitemap.  Note if we don't want access control for
+    // based on MegaProtoUser, just use LiftRules.setSiteMap(siteMap) instead.
+    LiftRules.setSiteMapFunc(() => User.sitemapMutator(siteMap))
 
     // Show the spinny image when an Ajax call starts.
     LiftRules.ajaxStart =
