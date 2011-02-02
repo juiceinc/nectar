@@ -14,7 +14,7 @@ import xml.Node
  * <p>The only current user is "sparky@dog.com" with password "woof"</p>
  */
 object User extends User with MetaMegaProtoUser[User] with Loggable {
-  //
+  // TODO Remove when connecting Record to storage.
   lazy val sparky = new User {
     firstName("Sparky")
     lastName("TheDog")
@@ -23,10 +23,8 @@ object User extends User with MetaMegaProtoUser[User] with Loggable {
     validated(true)
   }
 
-  protected def findUserByUserName(email: String): Box[User] = {
-    logger.info("--> findUserByUserName")
-    Full(sparky)
-  }
+  protected def findUserByUserName(email: String): Box[User] =
+    if (email == sparky.email.get) Full(sparky) else Empty
 
   protected def findUserByUniqueId(id: String): Box[User] = {
     logger.info("--> findUserByUniqueId")
@@ -49,6 +47,11 @@ object User extends User with MetaMegaProtoUser[User] with Loggable {
   override def screenWrap: Box[Node] = Full(<lift:surround with="default" at="content">
       <lift:bind/>
   </lift:surround>)
+
+  /**
+   * After successful authentication, send the person to the App page.
+   */
+  override def homePage: String = "/app"
 }
 
 /**

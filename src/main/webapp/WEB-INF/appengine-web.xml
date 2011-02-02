@@ -13,6 +13,7 @@
   </system-properties>
   <sessions-enabled>true</sessions-enabled>
   <static-files>
+    <include path="/config/**"/>
     <include path="/images/**"/>
     <exclude path="/**"/>
   </static-files>

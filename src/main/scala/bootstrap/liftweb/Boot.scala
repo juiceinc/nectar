@@ -7,14 +7,12 @@ import _root_.net.liftweb.sitemap._
 import Loc._
 import Helpers._
 import com.juiceanalytics.nectar.model.User
-import com.juiceanalytics.nectar.snippet.Login
 
 /**
  * A class that's instantiated early and run.  It allows the application
  * to modify lift's environment
  */
 class Boot {
-  val AltAuthRequired = If(() => Login.isLoggedIn.get, () => RedirectResponse("/login"))
 
   def boot {
     // Specify where to search for snippet code.
@@ -23,11 +21,14 @@ class Boot {
     // Build the SiteMap.
     val siteMap = SiteMap(
       Menu.i("Home") / "index" >> User.AddUserMenusAfter,
-      Menu.i("Text") / "text" >> EarlyResponse(() => Full(RedirectResponse("static/text.txt"))),
-      Menu.i("Alt Login") / "login" >> User.loginFirst,
-      Menu.i("Secure") / "secure" >> AltAuthRequired,
-      Menu.i("Static") / "static" / ** >> Hidden
+      Menu.i("App") / "app" >> EarlyResponse(() => Full(RedirectResponse("/user_mgt/login")).filter(_ => User.notLoggedIn_?))
     )
+
+    // Configure Lift to bypass the processing pipeline for /config/** XML files.
+    // TODO Should access control be applied to config files?
+    LiftRules.liftRequest.append {
+      case Req(List("config", _), "xml", _) => false
+    }
 
     // Set the sitemap.  Note if we don't want access control for
     // based on MegaProtoUser, just use LiftRules.setSiteMap(siteMap) instead.
