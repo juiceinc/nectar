@@ -24,10 +24,12 @@ class Boot {
       Menu.i("App") / "app" >> EarlyResponse(() => Full(RedirectResponse("/user_mgt/login")).filter(_ => User.notLoggedIn_?))
     )
 
-    // Configure Lift to bypass the processing pipeline for /config/** XML files.
     // TODO Should access control be applied to config files?
     LiftRules.liftRequest.append {
+      // Bypass the processing pipeline for /config/** XML files.
       case Req(List("config", _), "xml", _) => false
+      // Bypass processing of local GAE/J development server files.
+      case r: Req if (r.path(0) == "_ah") => false
     }
 
     // Set the sitemap.  Note if we don't want access control for
