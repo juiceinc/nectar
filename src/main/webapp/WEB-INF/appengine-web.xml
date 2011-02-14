@@ -17,9 +17,4 @@
     <include path="/images/**"/>
     <exclude path="/**"/>
   </static-files>
-
-  <!-- It it advised to keep this parameter to true -->
-  <!-- as per the release of SDK 1.2.8, -->
-  <!-- this should speed up cold startups of applications by 10%. -->
-  <precompilation-enabled>true</precompilation-enabled>
 </appengine-web-app>
