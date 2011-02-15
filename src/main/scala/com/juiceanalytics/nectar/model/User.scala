@@ -1,45 +1,26 @@
 package com.juiceanalytics.nectar.model
 
-import _root_.net.liftweb.record._
-import _root_.net.liftweb.common._
-import net.liftweb.util.FieldError
-import net.liftweb.sitemap.Menu
 import xml.Node
+import net.liftweb.common.{Box, Full}
 
 
 /**
- * Create the global User meta-object. This object provides functions
- * across all instances.
+ * Create the global User meta-object. This object shares functions
+ * across all instances of User.
  *
- * <p>The only current user is "sparky@dog.com" with password "woof"</p>
+ * @author Jon Buffington
  */
-object User extends User with MetaMegaProtoUser[User] with Loggable {
-  // TODO Remove when connecting Record to storage.
-  lazy val sparky = new User {
-    firstName("Sparky")
-    lastName("TheDog")
-    email("sparky@dog.com")
-    password("woof")
-    validated(true)
-  }
+object User extends User with appengine.MetaMegaProtoUser[User] {
 
-  protected def findUserByUserName(email: String): Box[User] =
-    if (email == sparky.email.get) Full(sparky) else Empty
-
-  protected def findUserByUniqueId(id: String): Box[User] = {
-    logger.info("--> findUserByUniqueId")
-    Full(sparky)
-  }
-
-  protected def userFromStringId(id: String): Box[User] = {
-    logger.info("--> userFromStringId")
-    Full(sparky)
-  }
+  /**
+   * Is the "from" email address for *ProtoUser generated email messages.
+   */
+  override def emailFrom: String = "jon.buffington@juiceanalytics.com"
 
   /**
    * Disable the sign-up/enrollment process.
    */
-  override def createUserMenuLoc: Box[Menu] = Empty
+//  override def createUserMenuLoc: Box[Menu] = Empty
 
   /**
    * Surround the login page with the default template.
@@ -55,11 +36,10 @@ object User extends User with MetaMegaProtoUser[User] with Loggable {
 }
 
 /**
- *  Is the class that defines any additional fields for User instances.
+ * Is the class that defines any additional fields for User instances.
+ *
+ * @author Jon Buffington
  */
-class User extends MegaProtoUser[User] {
-  def meta: MetaRecord[User] = User
-
-  // TODO Validate that the email address is unique will be implemented in the Record adapter.
-  protected def valUnique(errorMsg: => String)(email: String): List[FieldError] = List()
+class User extends appengine.MegaProtoUser[User] {
+  def meta = User
 }
