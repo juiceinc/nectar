@@ -15,7 +15,7 @@ object User extends User with appengine.MetaMegaProtoUser[User] {
   /**
    * Is the "from" email address for *ProtoUser generated email messages.
    */
-  override def emailFrom: String = "jon.buffington@juiceanalytics.com"
+  override def emailFrom: String = "no-reply@sliceboard.appspotmail.com"
 
   /**
    * Disable the sign-up/enrollment process.
