@@ -26,7 +26,7 @@
     <!-- scala plugin version -->
     <maven.scala.version>2.15.0</maven.scala.version>
     <!-- Google App Engine version -->
-    <gae.version>1.4.0</gae.version>
+    <gae.version>1.4.2</gae.version>
   </properties>
 
   <dependencies>
