@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>sliceboard</application>
-  <version>1</version>
+  <version>2</version>
   <system-properties>
     <!-- Set-up the app engine JDK logging. -->
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
-    <!-- The following two properties are Lift-specific. -->
-    <!-- Turn on Lift's GAE/J support. -->
-    <property name="in.gae.j" value="true"/>
-    <!-- Specify Lift's run mode: development, test, staging, pilot, or production. -->
-    <property name="run.mode" value="development"/>
+    <!-- Configure Scalate to use only precompiled templates. -->
+    <property name="scalate.allowReload" value="false"/>
+    <property name="scalate.workdir" value="WEB-INF"/>
   </system-properties>
   <sessions-enabled>true</sessions-enabled>
   <static-files>
     <include path="/config/**"/>
     <include path="/images/**"/>
-    <exclude path="/**"/>
+    <include path="/js/**"/>
   </static-files>
 </appengine-web-app>

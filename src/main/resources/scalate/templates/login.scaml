@@ -1,0 +1,18 @@
+- attributes("title") = "Login"
+- attributes("layout") = "scalate/layouts/default.scaml"
+
+%form(action="" method="POST")
+  %fieldset
+    %legend Application Login
+    %ol
+      %li
+        %label(for="username") Username
+        %input#username(name="username" type="text")
+      %li
+        %label(for="password") Password
+        %input#password(name="password" type="password")
+      %li
+        %label(for="rememberMe") Remember Me
+        %input#rememberMe(name="rememberMe" type="checkbox")
+  %fieldset.submit
+    %input(type="submit" value="Login")

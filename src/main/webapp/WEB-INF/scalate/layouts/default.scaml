@@ -1,0 +1,27 @@
+-@ val title: String
+-@ val headline: String = title
+-@ val body: String
+
+- import org.apache.shiro.SecurityUtils
+
+- response.setContentType("text/html")
+
+!!! 5
+%html
+  %head
+    %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    %title= title
+  %body
+    #content
+      %h1= headline
+      != body
+      %ul.menu
+        %li
+          %a(title="Home" href="/") Home
+        %li
+          %a(title="App" href="/app/index") App
+        %li
+          - if (SecurityUtils.getSubject.isAuthenticated)
+            %a(title="Logout" href="/logout") Logout
+          - else
+            %a(title="Login" href="/app/index") Login
