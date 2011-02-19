@@ -111,6 +111,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.8.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.scalatra</groupId>
       <artifactId>scalatra-scalatest_${scala.version}</artifactId>
       <version>${scalatra.version}</version>

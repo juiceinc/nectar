@@ -1,8 +1,9 @@
+- import org.apache.shiro.subject.Subject
+
 -@ val title: String
 -@ val headline: String = title
 -@ val body: String
-
-- import org.apache.shiro.SecurityUtils
+-@ val subject: Subject
 
 - response.setContentType("text/html")
 
@@ -21,7 +22,7 @@
         %li
           %a(title="App" href="/app/index") App
         %li
-          - if (SecurityUtils.getSubject.isAuthenticated)
+          - if (subject.isAuthenticated)
             %a(title="Logout" href="/logout") Logout
           - else
             %a(title="Login" href="/app/index") Login
