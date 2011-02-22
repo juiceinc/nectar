@@ -5,6 +5,11 @@ import org.scalatra._
 import scalate.ScalateSupport
 
 abstract class SecuredFilter extends ScalatraFilter with ScalateSupport with Security {
+  /**
+   * @return Returns true if the current request is for the administrative
+   * section of the application.
+   */
+  protected def isAdminReq: Boolean = requestPath.startsWith("/admin/")
 
   get("/logout") {
     subject.logout
@@ -21,7 +26,11 @@ abstract class SecuredFilter extends ScalatraFilter with ScalateSupport with Sec
     servletContext.getResource(templatePath) match {
       case url: URL =>
         contentType = "text/html"
-        templateEngine.layout(templatePath, Map("subject" -> subject))
+        val attributes = Map(
+          "currentUser" -> currentUser,
+          "logoutURL" -> logoutURL
+        )
+        templateEngine.layout(templatePath, attributes)
       case _ =>
         filterChain.doFilter(request, response)
     }

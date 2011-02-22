@@ -17,11 +17,7 @@
       != body
       %ul.menu
         %li
-          %a(title="Home" href="/") Home
-        %li
-          %a(title="App" href="/app/index") App
-        %li
-          - if (currentUser.isDefined)
+          %a(title="Home" href="/admin/") Main
+        - if (currentUser.isDefined)
+          %li
             %a(title="Logout" href="#{logoutURL}") Logout #{currentUser.get}
-          - else
-            %a(title="Login" href="/app/index") Login

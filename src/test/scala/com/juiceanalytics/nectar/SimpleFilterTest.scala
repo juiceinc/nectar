@@ -23,6 +23,13 @@ class SimpleFilterTest extends ScalatraFunSuite with ShouldMatchers {
       status should equal(302)
     }
   }
+
+  test("GET /admin/ returns status 200") {
+    get("/admin/") {
+      status should equal(200)
+    }
+  }
+
 }
 
 class TestableSimpleFilter extends SecuredFilter with MockitoSugar {
@@ -34,6 +41,10 @@ class TestableSimpleFilter extends SecuredFilter with MockitoSugar {
     when(s.isAuthenticated).thenReturn(false)
     s
   }
+
+  def logoutURL: String = "/logout"
+
+  def currentUser: Option[String] = None
 
   override def subject: Subject = mockedSubject
 }
