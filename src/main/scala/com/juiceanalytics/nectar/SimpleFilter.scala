@@ -6,7 +6,6 @@ import com.google.appengine.api.users.UserServiceFactory
 
 class SimpleFilter extends SecuredFilter {
   def currentUser: Option[String] = {
-    if (isAdminReq)
     val principle = request.getUserPrincipal
     if (principle == null)
       None
