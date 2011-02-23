@@ -64,7 +64,6 @@
       <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-web</artifactId>
       <version>${shiro.version}</version>
-      <scope>runtime</scope>
       <exclusions>
         <!-- Exclude Commons Logging in favor of SLF4J. -->
         <exclusion>
@@ -97,6 +96,11 @@
       <groupId>org.scalatra</groupId>
       <artifactId>scalatra-scalate_${scala.version}</artifactId>
       <version>${scalatra.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.objectify</groupId>

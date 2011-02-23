@@ -1,5 +1,6 @@
 package com.juiceanalytics.nectar
 
+import model.User
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
 import com.google.appengine.api.users.UserServiceFactory
@@ -21,4 +22,9 @@ class SimpleFilter extends SecuredFilter {
   }
 
   def subject: Subject = SecurityUtils.getSubject
+
+  // TODO Remove after enrollment is set-up
+  get("/create-tester") {
+    User.createTester.toString
+  }
 }

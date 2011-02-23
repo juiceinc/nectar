@@ -39,15 +39,8 @@ class CSRFTokenAuthenticationFilter extends FormAuthenticationFilter {
   /**
    * @return Returns the CSRF token value from the form parameters.
    */
-  def formToken(request: ServletRequest): Option[String] = {
-    val token = WebUtils.getCleanParam(request, csrfKey)
-    if (token == null) {
-      None
-    }
-    else {
-      Some(token)
-    }
-  }
+  def formToken(request: ServletRequest): Option[String] =
+    Option(WebUtils.getCleanParam(request, csrfKey))
 
   /**
    * Returns whether the request form token matches the request

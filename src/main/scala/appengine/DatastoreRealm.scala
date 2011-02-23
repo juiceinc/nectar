@@ -9,6 +9,7 @@ import crypto.SecureRandomNumberGenerator
 import realm.AuthorizingRealm
 import subject.PrincipalCollection
 import util.SimpleByteSource
+import com.juiceanalytics.nectar.model.User
 
 
 /**
@@ -18,8 +19,6 @@ import util.SimpleByteSource
  * @author Jon Buffington
  */
 class DatastoreRealm extends AuthorizingRealm {
-  lazy val userEntity = new MockUser("hello", "hello")
-
   /**
    * Get the user entity with the given username. If the username is not
    * found, then an UnknownAccountException is thrown.
@@ -27,14 +26,13 @@ class DatastoreRealm extends AuthorizingRealm {
    * @param username Is the unique account name.
    * @return Returns the user entity that matches the given username.
    */
-  protected def findByUsername(username: String): UserEntity = userEntity
-  /*
-  val user = User.findByUsername(username)
-  if (user.isEmpty) {
+  protected def findByUsername(username: String): UserEntity = {
+    val user = User.findByEmail(username)
+    if (user.isEmpty) {
       throw new UnknownAccountException("Unable to find user, '" + username + "' in the datastore.");
+    }
+    user.get
   }
-  user
-  */
 
   override def onInit: Unit = {
     val matcher = new HashedCredentialsMatcher(Sha256Hash.ALGORITHM_NAME)
@@ -112,19 +110,4 @@ object UserEntity {
    */
   def hashedCredentials(plaintext: String, salt: String): String =
     new SimpleHash(Sha256Hash.ALGORITHM_NAME, plaintext, salt, hashIterations).toBase64
-}
-
-class MockUser(val username: String, val password: String) extends UserEntity {
-  // The following need to be lazy to avoid a start-up RNG seed problem.
-  // Note: This should only be a mocking issue.
-  lazy val hashedCredentials = UserEntity.hashedCredentials(password, credentialsSalt)
-  lazy val credentialsSalt   = UserEntity.salt
-
-  def uniqueName: String = username
-
-  def credentials: String = hashedCredentials
-
-  def salt: String = credentialsSalt
-
-  def roles = Set("admin")
 }
