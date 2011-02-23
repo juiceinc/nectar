@@ -1,6 +1,8 @@
 - attributes("title") = "Login"
 - attributes("layout") = "/WEB-INF/scalate/layouts/default.scaml"
 
+-@ val csrfElement: xml.NodeSeq
+
 %form(action="/login" method="post")
   %fieldset
     %legend Application Login
@@ -16,6 +18,7 @@
         %input#rememberMe(name="rememberMe" type="checkbox")
   %fieldset.submit
     %input(type="submit" value="Login")
+    != csrfElement
 
 - if (request.getAttribute("shiroLoginFailure") != null)
   %p.info
