@@ -9,8 +9,8 @@ package com.juiceanalytics.nectar.model
 object Roles {
   val dashboardViewer = "viewer"
   val dashboardEditor = "editor"
-  val clientAdmin = "client"
-  val sysAdmin = "sysadmin"
+  val clientAdmin     = "client"
+  val sysAdmin        = "sysadmin"
 }
 
 /**
@@ -20,19 +20,20 @@ object Roles {
  * @see http://manage.juiceanalytics.com/confluence/display/SLICE/Authorization+Roles+and+Permissions
  */
 object Permissions {
-  val createDashboard = "cd"
-  val readDashboard = "rd"
-  val updateDashboard = "ud"
-  val deleteDashboard = "dd"
-  val editDashboardPermissions = "perms"
-  val uploadCSV = "upload"
-  val createDashboardUser = "cu"
-  val readDashboardUser = "ru"
-  val updateDashboardUser = "uu"
-  val deleteDashboardUser = "du"
-  val modifyBillingInfo = "billing"
-  val createClient = "ca"
-  val readClient = "ra"
-  val updateClient = "ua"
-  val deleteClient = "da"
+  val createDashboard      = "cd"
+  val readDashboard        = "rd"
+  val updateDashboard      = "ud"
+  val deleteDashboard      = "dd"
+  val editDashboardSharing = "sharing"
+  val uploadCSV            = "upload"
+  val createDashboardUser  = "cu"
+  val readDashboardUser    = "ru"
+  val updateDashboardUser  = "uu"
+  val deleteDashboardUser  = "du"
+  val modifyBillingInfo    = "billing"
+  val createClient         = "cc"
+  val readClient           = "rc"
+  val updateClient         = "uc"
+  val deleteClient         = "dc"
+  val allClients           = "multiClient"
 }

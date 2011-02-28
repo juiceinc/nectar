@@ -18,9 +18,9 @@ case class User() extends KeyAsId with UserEntity {
            var lastName  : String                 = ""
            var hash64    : String                 = ""
            var salt64    : String                 = ""
-           var rolesNames: java.util.List[String] = ArrayBuffer(Roles.dashboardViewer)
+           var rolesNames: java.util.List[String] = new ArrayBuffer[String]
 
-  def isEditor: Boolean = rolesNames.contains(Roles.dashboardViewer, Roles.dashboardEditor)
+  def isEditor: Boolean = rolesNames.contains(Roles.dashboardEditor)
 
   def isClientAdmin: Boolean = rolesNames.contains(Roles.clientAdmin)
 
@@ -48,6 +48,7 @@ object User extends DAO[User] {
     u.hash64 = UserEntity.hashedCredentials("hello", u.salt64)
     u.firstName = "Jon"
     u.lastName = "Buffington"
+    u.rolesNames.add(Roles.dashboardViewer)
     save(u)
   }
 
