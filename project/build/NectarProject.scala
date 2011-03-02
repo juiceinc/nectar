@@ -21,14 +21,6 @@ class NectarProject(info: ProjectInfo) extends AppengineProject(info) with JRebe
   override def devAppserverStartAction = task { args => super.devAppserverStartTask(args) dependsOn(precompileTemplates) }
   override def updateWebappAction = task{ opts => appcfgTask("update", None, opts) dependsOn(precompileTemplates) } describedAs("Create or update an app version.")
 
-  // TODO The following patch can be removed after sbt-scalate-plugin 1.4.1 is released.
-  // See http://groups.google.com/group/scalate/browse_thread/thread/67334831863011f6
-  override def scalateSources = super.scalateSources ** new FileFilter {
-    def accept(file: java.io.File) = {
-      List(webappPath, mainResourcesPath) find { _.asFile == file } isDefined
-    }
-  }
-
   // Add Maven Local repository for SBT to search for (disable if this doesn't suit you)
   val mavenLocal = "Local Maven Repository" at new File(Path.userHome + "/.m2/repository").toURI.toString
 }
