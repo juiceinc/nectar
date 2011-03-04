@@ -38,10 +38,33 @@ trait CSRFTokenSupport {
   protected def csrfToken: String = session(csrfKey).toString
 
   before {
-    if (request.isWrite && session.get(csrfKey) != params.get(csrfKey)) {
+    if (isForged) {
       halt(403, "Request tampering detected.")
     }
     prepareCSRFToken
+  }
+
+  /**
+   * Is a list of URI paths to exclude form testing for request forgery.
+   */
+  protected def exclusions: List[String] = List()
+
+  /**
+   * Tests whether a POST request is a potential cross-site forgery.
+   */
+  protected def isForged: Boolean = {
+    //    request.isWrite && session.get(csrfKey) != params.get(csrfKey)
+    if (request.isWrite) {
+      if (exclusions.forall(requestPath.startsWith(_))) {
+        return false
+      }
+      else {
+        session.get(csrfKey) != params.get(csrfKey)
+      }
+    }
+    else {
+      false
+    }
   }
 
   protected def prepareCSRFToken = {
