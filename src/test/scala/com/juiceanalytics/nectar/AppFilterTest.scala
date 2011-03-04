@@ -8,9 +8,9 @@ import org.scalatest.mock.MockitoSugar
 
 
 @RunWith(classOf[JUnitRunner])
-class SimpleFilterTest extends ScalatraFunSuite with ShouldMatchers {
+class AppFilterTest extends ScalatraFunSuite with ShouldMatchers {
 
-  addFilter(classOf[TestableSimpleFilter], "/*")
+  addFilter(classOf[TestableAppFilter], "/*")
 
   test("GET / returns status 200") {
     get("/") {
@@ -32,7 +32,7 @@ class SimpleFilterTest extends ScalatraFunSuite with ShouldMatchers {
 
 }
 
-class TestableSimpleFilter extends SecuredFilter with MockitoSugar {
+class TestableAppFilter extends AppFilter with MockitoSugar {
   import org.apache.shiro.subject.Subject
   import org.mockito.Mockito._
 
@@ -42,9 +42,9 @@ class TestableSimpleFilter extends SecuredFilter with MockitoSugar {
     s
   }
 
-  def logoutURL: String = "/logout"
+  override def logoutURL: String = "/logout"
 
-  def currentUser: Option[String] = None
+  override def currentUser: Option[String] = None
 
   override def subject: Subject = mockedSubject
 }
