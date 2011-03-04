@@ -2,16 +2,15 @@ package com.juiceanalytics.nectar
 
 import com.google.appengine.api.users.UserServiceFactory
 import grizzled.slf4j.Logger
+import java.io.InputStreamReader
 import java.net.URL
-import model.User
+import model.{DataSet, User}
+import org.apache.commons.fileupload.{FileItemFactory, FileItem}
 import org.scalatra.ScalatraFilter
 import org.scalatra.fileupload.FileUploadSupport
 import org.scalatra.scalate.ScalateSupport
 import security.{SecuredResponder, SecurityModel}
-import util.CSVParser
-import org.apache.commons.fileupload.FileItem
-import java.io.{BufferedReader, InputStreamReader}
-
+import util.{MemoryFileItemFactory, CSVParser}
 
 class AppFilter extends ScalatraFilter
                         with SecurityModel
@@ -51,6 +50,11 @@ class AppFilter extends ScalatraFilter
         filterChain.doFilter(request, response)
     }
   }
+
+  /**
+   * Store uploaded files in memory only as App Engine prohibits file system access.
+   */
+  override protected def fileItemFactory: FileItemFactory = new MemoryFileItemFactory
 
   override def logoutURL: String = {
     if (isAdminReq) {
@@ -99,43 +103,35 @@ class AppFilter extends ScalatraFilter
     processCSVFile(fileParams("csvfile"))
   }
 
-/*
   def processCSVFile(fi: FileItem) {
+    import collection.JavaConversions._
+
     val parsed = CSVParser.parseFile(new InputStreamReader(fi.getInputStream))
-    var n = 0
+
+    // Save the data to the data store.
+    val dataSet = new DataSet
+    parsed.foreach {
+      data: List[List[String]] =>
+        dataSet("test", data)
+        DataSet.save(dataSet)
+    }
+
+    // Output the data set back to the browser.
     val writer = response.getWriter
-    for (rows <- parsed; row <- rows) {
+    def writeLn(row: java.util.List[String]) {
       for (col <- row) {
         writer.print(col)
         writer.print(" | ")
       }
       writer.println()
-      n += 1
-    }
-    writer.println("Parsed " + n + " rows.")
-
-    response.setContentType("text/plain")
-  }
-*/
-
-  def processCSVFile(fi: FileItem) {
-    val writer = response.getWriter
-    val reader = new BufferedReader(new InputStreamReader(fi.getInputStream))
-
-    var line = reader.readLine
-    var n = 0
-    while (line != null) {
-      val parsed = CSVParser.parseLine(line)
-      for (record <- parsed; col <- record) {
-        writer.print(col)
-        writer.print(" | ")
-      }
-      writer.println()
-      line = reader.readLine
-      n += 1
     }
 
-    writer.println("Parsed " + n + " rows.")
+    writeLn(dataSet.columns)
+    for (row <- dataSet.rows) {
+      writeLn(row)
+    }
+
+    writer.println("Parsed " + dataSet.rowCount + " rows.")
 
     response.setContentType("text/plain")
   }
