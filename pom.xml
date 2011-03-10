@@ -260,9 +260,14 @@
         <version>${scalate.version}</version>
         <executions>
           <execution>
+            <id>precompile</id>
+            <phase>process-classes</phase>
             <goals>
               <goal>precompile</goal>
             </goals>
+            <configuration>
+              <resourcesSourceDirectory>${basedir}/src/main/webapp/WEB_INF/scalate</resourcesSourceDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
