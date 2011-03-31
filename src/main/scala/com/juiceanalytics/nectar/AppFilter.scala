@@ -30,7 +30,7 @@ class AppFilter extends ScalatraFilter
    * Attempt to render a template if it exists. If the template does not exist,
    * the allow the filter chain processing to continue.
    */
-  protected def useTemplate {
+  protected def useTemplate() {
     val templateBase = requestPath match {
       case s if s.endsWith("/") => s + "index"
       case s => s
@@ -67,13 +67,13 @@ class AppFilter extends ScalatraFilter
 
   // Provide a route to a common logout URL.
   get(super.logoutURL) {
-    subject.logout
+    subject.logout()
     redirect("/")
   }
 
   // Attempt to use templates before returning 404.
   notFound {
-    useTemplate
+    useTemplate()
   }
 
   // ------------------------------------------------------------------------

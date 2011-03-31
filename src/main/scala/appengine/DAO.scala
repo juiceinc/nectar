@@ -61,7 +61,7 @@ abstract class DAO[T <: AnyRef] extends helper.DAOBase {
    *
    * @param entity Is the entity to delete using its @Id field.
    */
-  def delete(entity: T): Unit = {
+  def delete(entity: T) {
     ofy.delete(entity)
   }
 

@@ -32,11 +32,11 @@ case class DataSet() extends KeyAsId {
   def apply(name: String, table: List[List[String]]) {
     title = name
     // Capture the header
-    columns.clear
+    columns.clear()
     val header = table(0)
     header.copyToBuffer(columns)
     // Capture the data
-    rows.clear
+    rows.clear()
     val data = table.tail
     for (row <- data) {
       rows.add(new RowType(row))

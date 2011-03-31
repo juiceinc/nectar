@@ -31,7 +31,7 @@ case class MemoryFileItem(var fieldName: String, val contentType: String, var fo
     fieldName = name
   }
 
-  def delete {
+  def delete() {
     content.reset()
   }
 

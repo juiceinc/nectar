@@ -34,7 +34,7 @@ class DatastoreRealm extends AuthorizingRealm {
     user.get
   }
 
-  override def onInit: Unit = {
+  override def onInit() {
     val matcher = new HashedCredentialsMatcher(Sha256Hash.ALGORITHM_NAME)
     matcher.setStoredCredentialsHexEncoded(false) // false means Base64-encoded
     matcher.setHashIterations(UserEntity.hashIterations)
