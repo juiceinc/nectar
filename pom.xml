@@ -18,7 +18,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
 
-    <gae.version>1.4.2</gae.version>
+    <gae.version>1.4.3</gae.version>
     <jetty.version>7.2.1.v20101111</jetty.version>
     <maven.scala.version>2.15.2</maven.scala.version>
     <maven.scaladoc.vscaladocVersion>1.2-m1</maven.scaladoc.vscaladocVersion>
@@ -214,7 +214,7 @@
       <plugin>
         <groupId>net.kindleit</groupId>
         <artifactId>maven-gae-plugin</artifactId>
-        <version>0.8.2</version>
+        <version>0.8.4</version>
         <configuration>
           <serverId>appengine.google.com</serverId>
         </configuration>
