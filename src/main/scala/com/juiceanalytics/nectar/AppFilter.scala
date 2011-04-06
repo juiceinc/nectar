@@ -1,22 +1,28 @@
 package com.juiceanalytics.nectar
 
-import com.google.appengine.api.users.UserServiceFactory
+import com.google.appengine.api.users.UserService
+import com.google.inject.Inject
+import com.google.inject.Singleton
 import grizzled.slf4j.Logger
 import java.io.InputStreamReader
 import java.net.URL
 import model.{DataSet, User}
 import org.apache.commons.fileupload.{FileItemFactory, FileItem}
+import org.apache.shiro.subject.Subject
 import org.scalatra.ScalatraFilter
 import org.scalatra.fileupload.FileUploadSupport
 import org.scalatra.scalate.ScalateSupport
-import security.{SecuredResponder, SecurityModel}
+import security.{AuthenticatedContext, SecuredResponder}
 import util.{MemoryFileItemFactory, CSVParser}
 
-class AppFilter extends ScalatraFilter
-                        with SecurityModel
-                        with SecuredResponder
-                        with FileUploadSupport
-                        with ScalateSupport {
+
+@Singleton
+class AppFilter @Inject()(val authDelegate: AuthenticatedContext,
+                          val userService: UserService) extends ScalatraFilter
+                                                                with AuthenticatedContext
+                                                                with SecuredResponder
+                                                                with FileUploadSupport
+                                                                with ScalateSupport {
 
   private lazy val logger = Logger(getClass)
 
@@ -42,7 +48,7 @@ class AppFilter extends ScalatraFilter
         contentType = "text/html"
         val attributes = Map(
           "csrfElement" -> csrfElement,
-          "currentUser" -> currentUser,
+          "currentUserId" -> currentUserId,
           "logoutURL" -> logoutURL
         )
         templateEngine.layout(templatePath, attributes)
@@ -51,19 +57,33 @@ class AppFilter extends ScalatraFilter
     }
   }
 
+  def currentUserId: Option[String] = {
+    val principle = request.getUserPrincipal
+    if (principle == null) {
+      None
+    }
+    else {
+      Some(principle.getName)
+    }
+  }
+
+  def currentUser: Option[User] = authDelegate.currentUser
+
+  override def logoutURL: String = {
+    if (isAdminReq) {
+      userService.createLogoutURL("/admin/")
+    }
+    else {
+      authDelegate.logoutURL
+    }
+  }
+
+  def subject: Subject = authDelegate.subject
+
   /**
    * Store uploaded files in memory only as App Engine prohibits file system access.
    */
   override protected def fileItemFactory: FileItemFactory = new MemoryFileItemFactory
-
-  override def logoutURL: String = {
-    if (isAdminReq) {
-      UserServiceFactory.getUserService.createLogoutURL("/admin/")
-    }
-    else {
-      super.logoutURL
-    }
-  }
 
   // Provide a route to a common logout URL.
   get(super.logoutURL) {

@@ -1,7 +1,7 @@
 -@ val title: String
 -@ val headline: String = title
 -@ val body: String
--@ val currentUser: Option[String]
+-@ val currentUserId: Option[String]
 -@ val logoutURL: String
 
 - response.setContentType("text/html")
@@ -21,7 +21,7 @@
         %li
           %a(title="App" href="/app/index") App
         %li
-          - if (currentUser.isDefined)
-            %a(title="Logout" href="#{logoutURL}") Logout #{currentUser.get}
+          - if (currentUserId.isDefined)
+            %a(title="Logout" href="#{logoutURL}") Logout #{currentUserId.get}
           - else
             %a(title="Login" href="/app/index") Login
