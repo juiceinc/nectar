@@ -4,19 +4,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
-  <!-- Google Guice + JBoss RESTEasy integration -->
-  <context-param>
-    <param-name>resteasy.guice.modules</param-name>
-    <param-value>com.juiceanalytics.nectar.config.AppModule</param-value>
-  </context-param>
 
+  <!-- Google Guice configuration -->
   <listener>
-    <listener-class>org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener</listener-class>
-  </listener>
-
-  <!-- Google Guice integration -->
-  <listener>
-    <listener-class>com.juiceanalytics.nectar.GuiceContextListener</listener-class>
+    <listener-class>com.juiceanalytics.nectar.config.GuiceContext</listener-class>
   </listener>
 
   <!-- Apache Shiro integration -->
@@ -27,21 +18,6 @@
 
   <filter-mapping>
     <filter-name>shiroFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-
-  <!-- JBoss RESTEasy integration -->
-  <filter>
-    <filter-name>restFilter</filter-name>
-    <filter-class>org.jboss.resteasy.plugins.server.servlet.FilterDispatcher</filter-class>
-    <init-param>
-      <param-name>javax.ws.rs.Application</param-name>
-      <param-value>com.juiceanalytics.nectar.RestApiApplication</param-value>
-    </init-param>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>restFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 

@@ -7,11 +7,11 @@ import scala.collection.JavaConversions._
 
 
 /**
- * Specifies the ReSTful resource views available to the API.
+ * Specifies the root resource views deployed under the "/resources" URI.
  *
  * @author Jon Buffington
  */
-class RestApiApplication extends Application {
+class RestApplication extends Application {
   override def getClasses = mutable.Set[java.lang.Class[_]](classOf[UserResource])
 }
 
@@ -20,7 +20,7 @@ class RestApiApplication extends Application {
  *
  * @author Jon Buffington
  */
-object RestApiApplication {
+object RestApplication {
   val JSON_MEDIA_TYPE = "application/vnd.juiceanalytics+json"
   val XML_MEDIA_TYPE = "application/vnd.juiceanalytics+xml"
 }

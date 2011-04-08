@@ -11,15 +11,20 @@ import javax.ws.rs.{GET, Path, Produces}
  *  
  * @author Jon Buffington
  */
-@Path("/api/user")
-class UserResource @Inject()(val authContext:AuthenticatedContext) {
+@Path("user")
+trait UserResource {
 
   @GET
-  @Path("/current")
+  @Path("current")
   @Produces(Array("application/vnd.juiceanalytics+json", "application/json"))
-  def current: UserBean = {
-    new UserBean(authContext.currentUser.getOrElse(new User))
-  }
+  def current: UserBean
+}
+
+/**
+ * Is the default implementation of a {@link UserResource}.
+ */
+class UserResourceImpl @Inject()(val authContext:AuthenticatedContext) extends UserResource {
+  def current: UserBean = new UserBean(authContext.currentUser.getOrElse(new User))
 }
 
 /**
