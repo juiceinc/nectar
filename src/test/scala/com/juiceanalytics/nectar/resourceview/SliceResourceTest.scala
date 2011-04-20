@@ -7,26 +7,54 @@ import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.BeforeAndAfterEach
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig
+import com.juiceanalytics.nectar.model.Slice
 
 
 /**
- * Is the unit test cases for the {@link UserResource} class.
+ * Is the unit test cases for the {@link SliceResource} class.
  *
- * @author Jon Buffington
+ * @author Glenn Renfro
  */
 @RunWith(classOf[JUnitRunner])
-class UserResourceTest extends FunSuite with ShouldMatchers {
+class SliceResourceTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
   val injector = Guice.createInjector(new AppTestModule)
 
-  test("current UserResource is the mock User") {
-    val userResource = injector.getInstance(classOf[UserResource])
-    val userBean = userResource.current
-    userBean.getId should be(null)
-    userBean.getEmail should be(MockAuthenticatedContext.userId)
-    userBean.getFirstName should be(MockAuthenticatedContext.firstName)
-    userBean.getLastName should be(MockAuthenticatedContext.lastName)
-    userBean.getRoles should contain(MockAuthenticatedContext.role)
-    userBean.getIsEditor should be(false)
-    userBean.getIsClientAdmin should be(false)
+  val helper =
+    new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
+
+  override def beforeEach() {
+    helper.setUp()
+  }
+
+  override def afterEach() {
+    helper.tearDown()
+  }
+
+
+  test("current Slice is the empty Slice object") {
+    val sliceResource = injector.getInstance(classOf[SliceResource])
+    val sliceBean = sliceResource.current
+    sliceBean.getId should be(null)
+    sliceBean.getTitle should equal("")
+    sliceBean.getSubTitle should equal("")
+    sliceBean.getIndex should equal(0)
+    sliceBean.getType should equal ("")
+
+  }
+
+
+
+  test("current Get All Slices is the mock User") {
+    val sliceResource:SliceResource = injector.getInstance(classOf[SliceResource])
+    sliceResource.sliceList.getSlices.size  should equal (0)
+    Slice.createTester
+    sliceResource.sliceList.getSlices.size  should equal (1)
+    Slice.createTester
+    sliceResource.sliceList.getSlices.size  should equal (2)
+
   }
 }

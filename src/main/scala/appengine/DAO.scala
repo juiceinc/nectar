@@ -1,7 +1,7 @@
 package appengine
 
 import com.googlecode.objectify._
-
+import java.util.{ArrayList, List}
 
 /**
  * Is the base class for all GAE Data Access Objects (DAO).
@@ -84,4 +84,7 @@ abstract class DAO[T <: AnyRef] extends helper.DAOBase {
   def findByName(name: String)(implicit manifest: Manifest[T]): Option[T] = {
     trySomeOrNone(ofy.get(manifest, name))
   }
+
+
+
 }

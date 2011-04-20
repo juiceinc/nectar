@@ -4,62 +4,118 @@ import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.BeforeAndAfterEach
 import appengine.UserEntity
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig
 
 
 @RunWith(classOf[JUnitRunner])
-class UserTest extends FunSuite with ShouldMatchers {
-  val userFixture = new User
+class SliceTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
+  val sliceFixture = new Slice
+  val helper =
+    new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
   override protected def withFixture(test: NoArgTest) {
     // Reset the test fixture before executing any of the tests.
-    userFixture.email = ""
-    userFixture.salt64 = ""
-    userFixture.hash64 = ""
-    userFixture.firstName = ""
-    userFixture.lastName = ""
-    userFixture.rolesNames.clear()
+    sliceFixture.sliceType = ""
+    sliceFixture.title = ""
+    sliceFixture.subtitle = ""
+    sliceFixture.index = 0
+
 
     test()
   }
 
-  test("user is not an editor or client admin") {
-    userFixture.rolesNames.add(Roles.dashboardViewer)
-    userFixture.isEditor should be(false)
-    userFixture.isClientAdmin should be(false)
+  override def beforeEach() {
+    helper.setUp()
   }
 
-  test("user is an editor but not a client admin") {
-    userFixture.rolesNames.add(Roles.dashboardEditor)
-    userFixture.isEditor should be(true)
-    userFixture.isClientAdmin should be(false)
+  override def afterEach() {
+    helper.tearDown()
   }
 
-  test("user is a client admin but not an editor") {
-    userFixture.rolesNames.add(Roles.clientAdmin)
-    userFixture.isEditor should be(false)
-    userFixture.isClientAdmin should be(true)
+  test("Default setup") {
+
+    sliceFixture.sliceType should equal("")
+    sliceFixture.title should equal("")
+    sliceFixture.subtitle should equal("")
+    sliceFixture.index should equal(0)
   }
 
-  test("user is both an editor and a client admin") {
-    userFixture.rolesNames.add(Roles.dashboardEditor)
-    userFixture.rolesNames.add(Roles.clientAdmin)
-    userFixture.isEditor should be(true)
-    userFixture.isClientAdmin should be(true)
+
+
+  test("Testing the Create") {
+    val sliceTmp = Slice.createTester();
+    sliceTmp.sliceType should equal("KeyMetrics")
+    sliceTmp.title should equal("Key Metric Slice")
+    sliceTmp.subtitle should equal("FOO SUB TITLE")
+    sliceTmp.index should equal(0)
+    Slice.save(sliceTmp)
+    val sliceOption = Slice.getBySliceType("KeyMetrics")
+    sliceOption.size should equal(1)
+    val sliceResult = sliceOption.get
+    sliceResult.sliceType should equal("KeyMetrics")
+    sliceResult.title should equal("Key Metric Slice")
+    sliceResult.subtitle should equal("FOO SUB TITLE")
+    sliceResult.index should equal(0)
+
+  }
+  test("Testing the Delete") {
+    val sliceTmp = Slice.createTester();
+    sliceTmp.sliceType should equal("KeyMetrics")
+    sliceTmp.title should equal("Key Metric Slice")
+    sliceTmp.subtitle should equal("FOO SUB TITLE")
+    sliceTmp.index should equal(0)
+    Slice.save(sliceTmp)
+
+    var sliceResult = Slice.getBySliceType("KeyMetrics").size
+    sliceResult should equal(1)
+    Slice.delete(sliceTmp)
+    sliceResult = Slice.getBySliceType("KeyMetrics").size
+    sliceResult should equal(0)
+
   }
 
-  test("user password can be compared to hashed value") {
-    val plaintext = "hello, world"
-    val salt = UserEntity.salt
-    userFixture.salt64 = salt
-    userFixture.hash64 = UserEntity.hashedCredentials(plaintext, userFixture.salt64)
 
-    userFixture.credentials should equal(UserEntity.hashedCredentials(plaintext, salt))
-    userFixture.salt should equal(salt)
+  test("Testing the Update") {
+    val sliceTmp = Slice.createTester();
+    sliceTmp.sliceType should equal("KeyMetrics")
+    sliceTmp.title should equal("Key Metric Slice")
+    sliceTmp.subtitle should equal("FOO SUB TITLE")
+    sliceTmp.index should equal(0)
+
+    var sliceResult = Slice.getBySliceType("KeyMetrics").size
+    sliceResult should equal(1)
+    sliceTmp.title = "FOOBAR"
+    Slice.save(sliceTmp)
+    val sliceOption = Slice.getBySliceType("KeyMetrics")
+    sliceOption.size should equal(1)
+    sliceOption.get.title should equal("FOOBAR")
+
   }
 
-  test("user email address is the unique name") {
-    userFixture.email = "iam@theworld.com"
-    userFixture.uniqueName should equal(userFixture.email)
+  test("Test Default setup") {
+    val sliceTmp = Slice.createTester();
+    sliceTmp.sliceType should equal("KeyMetrics")
+    sliceTmp.title should equal("Key Metric Slice")
+    sliceTmp.subtitle should equal("FOO SUB TITLE")
+    sliceTmp.index should equal(0)
   }
+
+  test("Test the Get All")    {
+       val sliceTmp = Slice.createTester();
+    sliceTmp.sliceType should equal("KeyMetrics")
+    sliceTmp.title should equal("Key Metric Slice")
+    sliceTmp.subtitle should equal("FOO SUB TITLE")
+    sliceTmp.index should equal(0)
+
+    val sliceOption = new Slice
+    sliceOption.title = "FOOBAR"
+    Slice.save(sliceOption)
+    val resultSet = Slice.getAll();
+    resultSet.size should equal (2)
+
+  }
+
 }

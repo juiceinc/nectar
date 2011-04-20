@@ -6,7 +6,7 @@ import com.google.inject.Singleton
 import grizzled.slf4j.Logger
 import java.io.InputStreamReader
 import java.net.URL
-import model.{DataSet, User}
+import model.{DataSet, User, Slice}
 import org.apache.commons.fileupload.{FileItemFactory, FileItem}
 import org.apache.shiro.subject.Subject
 import org.scalatra.ScalatraFilter
@@ -101,6 +101,7 @@ class AppFilter @Inject()(val authDelegate: AuthenticatedContext,
   // ------------------------------------------------------------------------
   get("/create-tester") {
     User.createTester.toString
+    Slice.createTester.toString
   }
 
   // ------------------------------------------------------------------------
