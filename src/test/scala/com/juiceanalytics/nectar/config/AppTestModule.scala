@@ -4,7 +4,8 @@ import com.google.appengine.api.users.UserService
 import com.google.inject.AbstractModule
 import com.juiceanalytics.nectar.security.{AuthenticatedContext, MockAuthenticatedContext}
 import org.scalatest.mock.MockitoSugar
-import com.juiceanalytics.nectar.resourceview.{SliceResource, SliceResourceImpl, UserResource, UserResourceImpl}
+
+import com.juiceanalytics.nectar.resourceview._
 
 
 /**
@@ -27,5 +28,6 @@ class AppTestModule extends AbstractModule with MockitoSugar {
     bind(classOf[UserService]).toInstance(userServiceMock)
     bind(classOf[UserResource]).to(classOf[UserResourceImpl])
     bind(classOf[SliceResource]).to(classOf[SliceResourceImpl])
+    bind(classOf[DashboardResource]).to(classOf[DashboardResourceImpl])
   }
 }

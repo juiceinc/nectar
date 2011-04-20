@@ -12,5 +12,7 @@ class Module extends AbstractModule {
   override protected def configure() {
     bind(classOf[UserResource]).to(classOf[UserResourceImpl])
     bind(classOf[SliceResource]).to(classOf[SliceResourceImpl])
+    bind(classOf[DashboardResource]).to(classOf[DashboardResourceImpl])
+
   }
 }

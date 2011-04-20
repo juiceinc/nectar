@@ -105,6 +105,23 @@ class AppFilter @Inject()(val authDelegate: AuthenticatedContext,
   }
 
   // ------------------------------------------------------------------------
+  // TODO Remove after dashboard creation workflow is set-up.
+  // ------------------------------------------------------------------------
+  get("/create-dashboard") {
+    <html>
+      <body>
+        <h1>Create Dashboard</h1>
+        <form method="post" action="/resources/users/current/dashboards">
+          <input name="title" type="text"/>
+          <input name="tags" type="text"/>
+          <input name="viewers" type="text"/>
+          <input type="submit"/>
+        </form>
+      </body>
+    </html>
+  }
+
+  // ------------------------------------------------------------------------
   // TODO Remove both "/data/" routes after data upload workflow is set-up.
   // ------------------------------------------------------------------------
   get("/data/") {
