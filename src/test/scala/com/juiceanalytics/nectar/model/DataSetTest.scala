@@ -19,8 +19,8 @@ class DataSetTest extends FunSuite with ShouldMatchers {
   override protected def withFixture(test: NoArgTest) {
     // Reset the test fixture before executing any of the tests.
     dataset.title = "Untitled"
-    dataset.columns.clear
-    dataset.rows.clear
+    dataset.columns.clear()
+    dataset.rows.clear()
 
     test()
   }

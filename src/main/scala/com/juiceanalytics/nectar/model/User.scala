@@ -31,6 +31,18 @@ case class User() extends KeyAsId with UserEntity {
   def roles: Set[String] = Set(rolesNames: _*)
 
   def uniqueName: String = email
+
+  override def toString: String = {
+    "User{" +
+        "id=" + id.toString +
+        ", email=" + email +
+        ", firstName=" + firstName +
+        ", lastName=" + lastName +
+        ", hash64=" + hash64 +
+        ", salt64=" + salt64 +
+        ", rolesNames=" + rolesNames.toString +
+        '}'
+  }
 }
 
 
@@ -41,7 +53,7 @@ object User extends DAO[User] {
   register()
 
   // TODO Remove after implementing user CRUD.
-  def createTester {
+  def createTester(): User = {
     val u = new User
     u.email = "j@b.com"
     u.salt64 = UserEntity.salt
@@ -50,6 +62,7 @@ object User extends DAO[User] {
     u.lastName = "Buffington"
     u.rolesNames.add(Roles.dashboardViewer)
     save(u)
+    u
   }
 
   /**

@@ -17,7 +17,7 @@ trait SecuredResponder extends CSRFTokenSupport {
   /**
    * Exclude App Engine URIs from CSRF inspections.
    */
-  override protected def exclusions = super.exclusions ++ List("/_ah")
+  override protected def exclusions = super.exclusions ++ List("/_ah", "/resources")
 
   /**
    * @return Returns an input element for inserting the CSRF token into a form.

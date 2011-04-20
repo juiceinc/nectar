@@ -55,7 +55,7 @@ trait CSRFTokenSupport {
   protected def isForged: Boolean = {
     //    request.isWrite && session.get(csrfKey) != params.get(csrfKey)
     if (request.isWrite) {
-      if (exclusions.forall(requestPath.startsWith(_))) {
+      if (exclusions.exists(requestPath.startsWith(_))) {
         return false
       }
       else {
