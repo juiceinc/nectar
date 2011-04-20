@@ -1,7 +1,8 @@
 package com.juiceanalytics.nectar
 
 import javax.ws.rs.core.Application
-import resourceview.UserResource
+import resourceview.{UserResource,SliceResource}
+
 import scala.collection._
 import scala.collection.JavaConversions._
 
@@ -12,7 +13,7 @@ import scala.collection.JavaConversions._
  * @author Jon Buffington
  */
 class RestApplication extends Application {
-  override def getClasses = mutable.Set[java.lang.Class[_]](classOf[UserResource])
+  override def getClasses = mutable.Set[java.lang.Class[_]](classOf[UserResource],classOf[SliceResource])
 }
 
 /**

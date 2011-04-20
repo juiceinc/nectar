@@ -99,7 +99,7 @@ object UserEntity {
   val hashIterations = 1024
 
   /**
-   * @retrun Returns a randomly-generated Base64 salt string.
+   * @return Returns a randomly-generated Base64 salt string.
    */
   def salt: String = rng.nextBytes.toBase64
 
