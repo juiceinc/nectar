@@ -13,8 +13,14 @@ import java.util.ArrayList
  *  
  * @author Glenn renfro
  */
-@Path("slice")
+@Path("slices")
 trait SliceResource {
+
+  /*curl -H "Accept: application/vnd.juiceanalytics+json" http://localhost:8080/resources/slices
+    */
+  @GET
+  @Produces(Array("application/vnd.juiceanalytics+json", "application/json"))
+  def sliceList:SliceList
   /*curl -H "Accept: application/vnd.juiceanalytics+json" http://localhost:8080/resources/slice/current
     */
   @GET
@@ -22,12 +28,7 @@ trait SliceResource {
   @Produces(Array("application/vnd.juiceanalytics+json", "application/json"))
   def current: SliceBean
 
-  /*curl -H "Accept: application/vnd.juiceanalytics+json" http://localhost:8080/resources/slice/list
-    */
-  @GET
-  @Path("list")
-  @Produces(Array("application/vnd.juiceanalytics+json", "application/json"))
-  def sliceList:SliceList
+
 }
 
 /**

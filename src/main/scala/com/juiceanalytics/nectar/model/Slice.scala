@@ -35,13 +35,13 @@ object Slice extends DAO[Slice] {
 
   // TODO Remove after implementing Slice CRUD.
   def createTester():Slice ={
-    val s = new Slice
+    val s = Slice ()
     s.sliceType = "KeyMetrics"
     s.title = "Key Metric Slice"
     s.subtitle = "FOO SUB TITLE"
     s.index=0;
     save(s);
-    return s;
+    s
   }
 
   /**
@@ -53,23 +53,23 @@ object Slice extends DAO[Slice] {
   def getBySliceType(sliceType: String): Option[Slice] =  {
     Option(ofy.query(classOf[Slice]).filter("sliceType", sliceType).get)
   }
-         /**
-   * An easy method to get all elements of a specific type of class.
-   * @TODO needs to be updated to be sensitive to the 30s limit, by adding cursors.
-   * @param entity the type of entity to look up.
-   *
-   */
-  def getAll(): List[Slice] = {
+/**
+* An easy method to get all elements of a specific type of class.
+* @TODO needs to be updated to be sensitive to the 30s limit, by adding cursors.
+* @param entity the type of entity to look up.
+*
+*/
+ def getAll(): List[Slice] = {
 
-    val query = ofy.query(classOf[Slice]);
+ val query = ofy.query(classOf[Slice]);
 
-    val iterator:QueryResultIterator [Slice]  = query.iterator()
-    val resultSet = new ArrayList[Slice]
+ val iterator:QueryResultIterator [Slice]  = query.iterator()
+ val resultSet = new ArrayList[Slice]
 
-    while (iterator.hasNext()) {
-      resultSet.add(iterator.next());
-    }
-     return resultSet
-  }
+ while (iterator.hasNext()) {
+ resultSet.add(iterator.next());
+ }
+return resultSet
+ }
 
-}
+ }

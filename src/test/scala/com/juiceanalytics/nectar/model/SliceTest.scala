@@ -11,7 +11,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 
 
 @RunWith(classOf[JUnitRunner])
-class SliceTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
+class SliceTest extends FunSuite with ShouldMatchers  {
   val sliceFixture = new Slice
   val helper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -22,21 +22,13 @@ class SliceTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
     sliceFixture.title = ""
     sliceFixture.subtitle = ""
     sliceFixture.index = 0
-
-
-    test()
-  }
-
-  override def beforeEach() {
     helper.setUp()
-  }
-
-  override def afterEach() {
+    test()
     helper.tearDown()
   }
 
-  test("Default setup") {
 
+  test("Default setup") {
     sliceFixture.sliceType should equal("")
     sliceFixture.title should equal("")
     sliceFixture.subtitle should equal("")
@@ -61,6 +53,7 @@ class SliceTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
     sliceResult.index should equal(0)
 
   }
+
   test("Testing the Delete") {
     val sliceTmp = Slice.createTester();
     sliceTmp.sliceType should equal("KeyMetrics")
