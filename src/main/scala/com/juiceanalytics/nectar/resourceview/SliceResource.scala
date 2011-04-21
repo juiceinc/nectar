@@ -15,12 +15,15 @@ import java.util.ArrayList
  */
 @Path("slice")
 trait SliceResource {
-
+  /*curl -H "Accept: application/vnd.juiceanalytics+json" http://localhost:8080/resources/slice/current
+    */
   @GET
   @Path("current")
   @Produces(Array("application/vnd.juiceanalytics+json", "application/json"))
   def current: SliceBean
 
+  /*curl -H "Accept: application/vnd.juiceanalytics+json" http://localhost:8080/resources/slice/list
+    */
   @GET
   @Path("list")
   @Produces(Array("application/vnd.juiceanalytics+json", "application/json"))
