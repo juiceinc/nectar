@@ -18,8 +18,6 @@ class DashboardTest extends FunSuite with ShouldMatchers {
 
   val dashboardFixture: Dashboard = new Dashboard
   val threeTags                   = List("tag1", "tag2", "tag3")
-  val nilUser                     = new Key(classOf[User], 0)
-  val viewers                     = List(nilUser)
 
   override protected def withFixture(test: NoArgTest) {
     dashboardFixture.title = "Untitled"

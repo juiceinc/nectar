@@ -4,8 +4,7 @@ import javax.servlet.{ServletResponse, ServletRequest}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter
 import org.apache.shiro.web.util.WebUtils
-import org.scalatra.ScalatraKernel
-
+import org.scalatra.CsrfTokenSupport
 
 /**
  * Requires the requesting user to be authenticated for the request to continue, and if they are not, forces the user
@@ -15,7 +14,7 @@ import org.scalatra.ScalatraKernel
  * @author Jon Buffington
  */
 class CSRFTokenAuthenticationFilter extends FormAuthenticationFilter {
-  val csrfKey: String = ScalatraKernel.csrfKey
+  val csrfKey: String = CsrfTokenSupport.DefaultKey
 
   /**
    * @return Returns the CSRF token value from the request.

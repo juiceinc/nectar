@@ -10,7 +10,6 @@ import java.io._
  *
  * @author Jon Buffington
  */
-@serializable
 case class MemoryFileItem(var fieldName: String, val contentType: String, var formField: Boolean, val fileName: String) extends FileItem with FileItemHeadersSupport {
 
   private val content: ByteArrayOutputStream = new ByteArrayOutputStream
